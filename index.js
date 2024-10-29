@@ -22,21 +22,26 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({ origin: ["http://localhost:5173"], credentials: true }))
 
+// Default route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Note App Backend!') // You can customize this message
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000")
 })
 
-// import routes
+// Import routes
 import authRouter from "./routes/auth.route.js"
 import noteRouter from "./routes/note.route.js"
 
 app.use("/api/auth", authRouter)
 app.use("/api/note", noteRouter)
 
-// error handling
+// Error handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500
-  const message = err.message || "Internal Serer Error"
+  const message = err.message || "Internal Server Error"
 
   return res.status(statusCode).json({
     success: false,
